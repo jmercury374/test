@@ -1,0 +1,45 @@
+## Refresh Token:
+
+If you need to use AzureHound and your user in enforced with MFA or Conditional Access Policy you will need to use refresh token. 
+
+Paste this code in a PowerShell window: 
+
+```powershell
+$body=@{
+    "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
+    "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
+    "code" =       $authResponse.device_code
+}
+$Tokens = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$Tokens
+```
+
+enter the following URL and enter the code in the ‘user_code’
+
+https://microsoft.com/devicelogin
+
+Once you complete the authentication in the browser, go to the same PowerShell Window and enter this code:
+
+```powershell
+$body=@{
+    "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
+    "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
+    "code" =       $authResponse.device_code
+}
+$Tokens = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$Tokens
+```
+
+Then, you will be able to use the code in the ‘refresh_token’ to authenticate to Azure
+
+`azurehound -r 0.AXkAey..REFRESHCODE list --tenant "TENANT_ID" -o out.json`
