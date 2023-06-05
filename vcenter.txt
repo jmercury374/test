@@ -1,10 +1,14 @@
-POST /sdk HTTP/2
-Host: PI
-Content-Type: text/xml; charset=utf-8
-User-Agent: PowerCLI/13.0.0.20829139
-Soapaction: "urn:vim25/8.0.0.1"
-Content-Length: 313
-Expect: 100-continue
-Accept-Encoding: gzip, deflate
+$method = [Microsoft.PowerShell.Commands.WebRequestMethod]::"POST"
+$URI = [System.Uri]::new("https://192.168.3.135:443/sdk")
+$maximumRedirection = [System.Int32] 0
+$headers = [System.Collections.Generic.Dictionary[string,string]]::new()
+$headers.Add("Host", "192.168.3.135")
+$contentType = [System.String]::new("text/xml; charset=utf-8")
+$userAgent = [System.String]::new("PowerCLI/13.0.0.20829139")
+$headers.Add("Soapaction", "`"urn:vim25/8.0.0.1`"")
+$headers.Add("Expect", "100-continue")
+$headers.Add("Accept-Encoding", "gzip, deflate")
+$body = [System.String]::new("<s:Envelope xmlns:s=`"http://schemas.xmlsoap.org/soap/envelope/`"><s:Body xmlns:xsi=`"http://www.w3.org/2001/XMLSchema-instance`" xmlns:xsd=`"http://www.w3.org/2001/XMLSchema`"><RetrieveServiceContent xmlns=`"urn:vim25`"><_this type=`"ServiceInstance`">ServiceInstance</_this></RetrieveServiceContent></s:Body></s:Envelope>")
+$response = (Invoke-WebRequest -Method $method -Uri $URI -MaximumRedirection $maximumRedirection -Headers $headers -ContentType $contentType -UserAgent $userAgent -Body $body)
+$response
 
-<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><RetrieveServiceContent xmlns="urn:vim25"><_this type="ServiceInstance">ServiceInstance</_this></RetrieveServiceContent></s:Body></s:Envelope>
